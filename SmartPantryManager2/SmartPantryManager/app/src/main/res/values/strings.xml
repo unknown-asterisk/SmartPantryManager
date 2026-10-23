@@ -8,6 +8,7 @@
     <string name="title_add_ingredient">Add ingredient</string>
     <string name="title_edit_ingredient">Edit ingredient</string>
     <string name="title_recipe_detail">Recipe</string>
+    <string name="action_share">Share recipe</string>
 
     <string name="nav_pantry">Pantry</string>
     <string name="nav_recipes">Recipes</string>
