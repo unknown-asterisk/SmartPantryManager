@@ -3,6 +3,7 @@ package com.example.smartpantry.db;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -160,7 +161,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public int deleteIngredient(long id) {
         return getWritableDatabase().delete(T_PANTRY, COL_ID + "=?", new String[]{String.valueOf(id)});
     }
-
+      /** @return how many items are in the pantry */
+       public int getIngredientCount() {
+           return (int) DatabaseUtils.queryNumEntries(getReadableDatabase(), T_PANTRY);
+       }
     public int deleteAllIngredients() {
         return getWritableDatabase().delete(T_PANTRY, null, null);
     }
