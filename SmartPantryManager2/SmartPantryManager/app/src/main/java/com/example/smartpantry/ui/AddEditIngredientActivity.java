@@ -21,6 +21,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.Calendar;
+import java.util.Locale;
 
 /**
  * Add / Edit Ingredient screen (one Activity, two modes).
@@ -146,6 +147,9 @@ public class AddEditIngredientActivity extends AppCompatActivity {
         quantityLayout.setError(null);
 
         String name = textOf(nameInput).trim().replaceAll("\\s+", " ");
+        if (!name.isEmpty()) {
+            name = name.substring(0, 1).toUpperCase(Locale.getDefault()) + name.substring(1);
+        }
         String qtyText = textOf(quantityInput).trim();
         boolean valid = true;
 
