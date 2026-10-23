@@ -1,6 +1,9 @@
 package com.example.smartpantry.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -13,6 +16,7 @@ import com.example.smartpantry.db.DatabaseHelper;
 import com.example.smartpantry.logic.RecipeMatcher;
 import com.example.smartpantry.model.MatchResult;
 import com.example.smartpantry.model.Recipe;
+import com.example.smartpantry.model.RecipeIngredient;
 import com.example.smartpantry.util.Prefs;
 import com.google.android.material.appbar.MaterialToolbar;
 
@@ -21,11 +25,14 @@ import java.util.List;
 /**
  * Recipe Detail screen. Receives only the recipe's id through an Intent extra, reloads the recipe
  * from SQLite, and shows the full ingredient list (with a tick/cross against the live pantry) and the method.
+ * The overflow menu lets the user share the recipe as plain text using an implicit Intent (ACTION_SEND).
  */
 public class RecipeDetailActivity extends AppCompatActivity {
 
     /** Intent extra: database id of the recipe to display. */
     public static final String EXTRA_RECIPE_ID = "extra_recipe_id";
+
+    private Recipe recipe;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +45,7 @@ public class RecipeDetailActivity extends AppCompatActivity {
 
         long recipeId = getIntent().getLongExtra(EXTRA_RECIPE_ID, -1);
         DatabaseHelper db = DatabaseHelper.getInstance(this);
-        Recipe recipe = db.getRecipe(recipeId);
+        recipe = db.getRecipe(recipeId);
         if (recipe == null) {
             Toast.makeText(this, "Recipe not found", Toast.LENGTH_SHORT).show();
             finish();
@@ -53,6 +60,41 @@ public class RecipeDetailActivity extends AppCompatActivity {
         bindStatus(result);
         bindIngredients(result);
         bindSteps(recipe);
+    }
+
+    /** Adds the three-dot menu (contains "Share recipe"). */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_recipe_detail, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_share && recipe != null) {
+            shareRecipe();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    /** Builds a plain-text version of the recipe and opens the Android share sheet. */
+    private void shareRecipe() {
+        StringBuilder sb = new StringBuilder(recipe.getName()).append("\n\nIngredients:\n");
+        for (RecipeIngredient ri : recipe.getIngredients()) {
+            sb.append("- ").append(ri.toDisplayString()).append("\n");
+        }
+        sb.append("\nMethod:\n");
+        List<String> steps = recipe.getStepList();
+        for (int i = 0; i < steps.size(); i++) {
+            sb.append(i + 1).append(". ").append(steps.get(i)).append("\n");
+        }
+
+        Intent send = new Intent(Intent.ACTION_SEND);
+        send.setType("text/plain");
+        send.putExtra(Intent.EXTRA_SUBJECT, recipe.getName());
+        send.putExtra(Intent.EXTRA_TEXT, sb.toString());
+        startActivity(Intent.createChooser(send, "Share recipe"));
     }
 
     @Override
