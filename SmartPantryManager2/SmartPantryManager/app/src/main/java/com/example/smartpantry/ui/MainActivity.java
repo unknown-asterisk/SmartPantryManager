@@ -71,6 +71,10 @@ public class MainActivity extends BaseActivity implements PantryAdapter.Listener
         int window = Prefs.getAlertDays(this);
         adapter.setAlertWindowDays(alertsOn ? window : -1);
         adapter.setItems(items);
+                   if (getSupportActionBar() != null) {
+               int count = db.getIngredientCount();
+               getSupportActionBar().setSubtitle(count + (count == 1 ? " item" : " items"));
+           }
 
         boolean empty = items.isEmpty();
         emptyView.setVisibility(empty ? View.VISIBLE : View.GONE);
