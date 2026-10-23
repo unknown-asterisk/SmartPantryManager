@@ -151,6 +151,19 @@ final class SeedData {
                         "Top with cheese and a pinch of salt."),
                 i("potato", 2, "piece"), i("cheese", 50, "g"), i("butter", 10, "g"), i("salt", 1, "tsp")));
 
+                list.add(r("Cheese and Tomato Sandwich", "A quick lunch.",
+                s("Butter the bread.", "Slice the tomato and cheese.", "Layer them between the slices."),
+                i("bread", 2, "piece"), i("cheese", 40, "g"), i("tomato", 1, "piece"), i("butter", 10, "g")));
+
+        list.add(r("Garlic Butter Pasta", "Simple and savoury.",
+                s("Boil the pasta until al dente.", "Melt the butter and fry the crushed garlic.", "Toss the pasta through."),
+                i("pasta", 200, "g"), i("butter", 40, "g"), i("garlic", 3, "piece")));
+
+        list.add(r("Rice and Beans", "Filling and cheap.",
+                s("Cook the rice.", "Fry the onion and garlic in oil.", "Add the beans, heat through and serve over the rice."),
+                i("rice", 200, "g"), i("bean", 200, "g"), i("onion", 1, "piece"),
+                i("garlic", 2, "piece"), i("olive oil", 1, "tbsp")));
+
         return list;
     }
 }
