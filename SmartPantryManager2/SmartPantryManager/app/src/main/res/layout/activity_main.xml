@@ -10,7 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
-        app:titleTextColor="@color/white" />
+                   app:titleTextColor="@color/white"
+           app:subtitleTextColor="@color/white" />
 
     <TextView
         android:id="@+id/tv_expiry_banner"
